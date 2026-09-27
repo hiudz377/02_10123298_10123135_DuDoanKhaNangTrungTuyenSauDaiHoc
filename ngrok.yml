@@ -1,0 +1,10 @@
+version: "2"
+authtoken: 3JsEwPP2vIWj4xBzoFiUbNrbhn3_5eZeX4hQ7uFfTdLu9PToH
+tunnels:
+  backend:
+    proto: http
+    addr: 8000
+    domain: snazzy-diffuser-skiing.ngrok-free.dev
+  frontend:
+    proto: http
+    addr: 3000

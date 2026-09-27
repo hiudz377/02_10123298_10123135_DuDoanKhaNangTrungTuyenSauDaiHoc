@@ -59,7 +59,7 @@ def _resolve_path(value: str) -> Path:
 
 def _load_model() -> tuple[Any, dict[str, Any]]:
 	artifact_path = _resolve_path(
-		os.getenv("MODEL_PATH", "models/graduate_admission_model.joblib")
+		os.getenv("MODEL_PATH", "models/model.joblib")
 	)
 	if not artifact_path.is_file():
 		raise FileNotFoundError(f"Model artifact does not exist: {artifact_path}")

@@ -10,7 +10,7 @@ COPY models ./models
 
 ENV PYTHONUNBUFFERED=1
 ENV PORT=8001
-ENV MODEL_PATH=models/graduate_admission_model.joblib
+ENV MODEL_PATH=models/model.joblib
 
 EXPOSE 8001
 
