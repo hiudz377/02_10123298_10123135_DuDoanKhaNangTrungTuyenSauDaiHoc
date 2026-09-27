@@ -1,0 +1,75 @@
+name: graduate-admission
+
+services:
+  ai-service:
+    build:
+      context: ./ai-models
+      dockerfile: service/Dockerfile
+    environment:
+      PORT: "8001"
+      MODEL_PATH: models/graduate_admission_model.joblib
+    ports:
+      - "${AI_SERVICE_PORT:-8001}:8001"
+    volumes:
+      - ./ai-models/models:/app/models:ro
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/health', timeout=3)"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./app/backend
+      dockerfile: Dockerfile
+    environment:
+      PORT: "8000"
+      AI_SERVICE_URL: http://ai-service:8001
+      CORS_ORIGINS: "${CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}"
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    depends_on:
+      ai-service:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=4)"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./app/frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: "${VITE_API_URL:-http://localhost:8000}"
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - -q
+        - -O
+        - /dev/null
+        - http://127.0.0.1/health
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped

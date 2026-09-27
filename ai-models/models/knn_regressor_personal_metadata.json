@@ -1,0 +1,40 @@
+{
+  "model_name": "KNN",
+  "model_version": "1.0.0",
+  "artifact": "knn_regressor_personal.joblib",
+  "target": "Chance of Admit",
+  "features": [
+    "GRE Score",
+    "TOEFL Score",
+    "University Rating",
+    "SOP",
+    "LOR",
+    "CGPA",
+    "Research"
+  ],
+  "random_state": 42,
+  "test_size": 0.2,
+  "cross_validation_folds": 5,
+  "best_parameters": {
+    "model__n_neighbors": 11,
+    "model__p": 2,
+    "model__weights": "distance"
+  },
+  "best_cv_mae": 0.048160495629532604,
+  "test_metrics": {
+    "mae": 0.0538859647195401,
+    "mse": 0.006038378144732156,
+    "rmse": 0.07770700190286688,
+    "r2": 0.7661660492330056
+  },
+  "fit_seconds_including_search": 3.7898255,
+  "test_prediction_seconds": 0.0032458000000001874,
+  "artifact_bytes": 8576,
+  "trained_at_utc": "2026-09-26T10:41:32.759522+00:00",
+  "versions": {
+    "scikit_learn": "1.6.1",
+    "numpy": "2.0.2",
+    "pandas": "2.3.3",
+    "joblib": "1.5.3"
+  }
+}

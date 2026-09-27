@@ -1,0 +1,40 @@
+{
+  "model_name": "SVR",
+  "model_version": "1.0.0",
+  "artifact": "svr_regressor_personal.joblib",
+  "target": "Chance of Admit",
+  "features": [
+    "GRE Score",
+    "TOEFL Score",
+    "University Rating",
+    "SOP",
+    "LOR",
+    "CGPA",
+    "Research"
+  ],
+  "random_state": 42,
+  "test_size": 0.2,
+  "cross_validation_folds": 5,
+  "best_parameters": {
+    "model__C": 1,
+    "model__epsilon": 0.03,
+    "model__gamma": 0.1
+  },
+  "best_cv_mae": 0.04792845519671106,
+  "test_metrics": {
+    "mae": 0.04933443284481645,
+    "mse": 0.005412156772074778,
+    "rmse": 0.0735673621388913,
+    "r2": 0.7904162392862653
+  },
+  "fit_seconds_including_search": 0.3098681000000001,
+  "test_prediction_seconds": 0.004054499999999628,
+  "artifact_bytes": 5463,
+  "trained_at_utc": "2026-09-26T10:41:33.076137+00:00",
+  "versions": {
+    "scikit_learn": "1.6.1",
+    "numpy": "2.0.2",
+    "pandas": "2.3.3",
+    "joblib": "1.5.3"
+  }
+}
