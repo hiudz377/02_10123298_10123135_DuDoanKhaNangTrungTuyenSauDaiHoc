@@ -1,0 +1,71 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Graduate Admission Prediction Request",
+    "description": "Input contract for the graduate admission prediction service.",
+    "type": "object",
+    "required": [
+        "features"
+    ],
+    "properties": {
+        "features": {
+            "type": "object",
+            "required": [
+                "GRE Score",
+                "TOEFL Score",
+                "University Rating",
+                "SOP",
+                "LOR",
+                "CGPA",
+                "Research"
+            ],
+            "properties": {
+                "GRE Score": {
+                    "type": "integer",
+                    "minimum": 290,
+                    "maximum": 340
+                },
+                "TOEFL Score": {
+                    "type": "integer",
+                    "minimum": 92,
+                    "maximum": 120
+                },
+                "University Rating": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5
+                },
+                "SOP": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "multipleOf": 0.5
+                },
+                "LOR": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "multipleOf": 0.5
+                },
+                "CGPA": {
+                    "type": "number",
+                    "minimum": 6.8,
+                    "maximum": 9.92
+                },
+                "Research": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1
+                }
+            },
+            "additionalProperties": false
+        },
+        "request_id": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "maxLength": 128
+        }
+    },
+    "additionalProperties": false
+}
