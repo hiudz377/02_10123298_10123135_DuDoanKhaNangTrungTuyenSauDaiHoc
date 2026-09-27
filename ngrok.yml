@@ -4,7 +4,7 @@ tunnels:
   backend:
     proto: http
     addr: 8000
-    domain: snazzy-diffuser-skiing.ngrok-free.dev
+
   frontend:
     proto: http
     addr: 3000
