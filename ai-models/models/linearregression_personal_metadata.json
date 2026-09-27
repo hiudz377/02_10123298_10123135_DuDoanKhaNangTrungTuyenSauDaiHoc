@@ -1,0 +1,36 @@
+{
+  "model_name": "LinearRegression",
+  "model_version": "1.0.0",
+  "artifact": "linearregression_personal.joblib",
+  "target": "Chance of Admit",
+  "features": [
+    "GRE Score",
+    "TOEFL Score",
+    "University Rating",
+    "SOP",
+    "LOR",
+    "CGPA",
+    "Research"
+  ],
+  "random_state": 42,
+  "test_size": 0.2,
+  "cross_validation_folds": 5,
+  "best_parameters": {},
+  "best_cv_mae": null,
+  "test_metrics": {
+    "mae": 0.04795673362091202,
+    "mse": 0.004617003377285012,
+    "rmse": 0.06794853476922819,
+    "r2": 0.8212082591486991
+  },
+  "fit_seconds_including_search": 0.05762791633605957,
+  "test_prediction_seconds": 0.004583835601806641,
+  "artifact_bytes": 1609,
+  "trained_at_utc": "2026-09-27T04:27:26.304691+00:00",
+  "versions": {
+    "scikit_learn": "1.6.1",
+    "numpy": "2.1.3",
+    "pandas": "2.2.3",
+    "joblib": "1.6.0"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "model_name": "GradientBoosting",
+  "model_version": "1.0.0",
+  "artifact": "gradientboosting_personal.joblib",
+  "target": "Chance of Admit",
+  "features": [
+    "GRE Score",
+    "TOEFL Score",
+    "University Rating",
+    "SOP",
+    "LOR",
+    "CGPA",
+    "Research"
+  ],
+  "random_state": 42,
+  "test_size": 0.2,
+  "cross_validation_folds": 5,
+  "best_parameters": {
+    "model__learning_rate": 0.05,
+    "model__max_depth": 2,
+    "model__min_samples_split": 2,
+    "model__n_estimators": 150
+  },
+  "best_cv_mae": 0.04718979403828618,
+  "test_metrics": {
+    "mae": 0.048545377396639146,
+    "mse": 0.005036198561074122,
+    "rmse": 0.07096617899446273,
+    "r2": 0.8049750813618097
+  },
+  "fit_seconds_including_search": 39.113170862197876,
+  "test_prediction_seconds": 0.002268075942993164,
+  "artifact_bytes": 120385,
+  "trained_at_utc": "2026-09-27T04:29:24.357279+00:00",
+  "versions": {
+    "scikit_learn": "1.6.1",
+    "numpy": "2.1.3",
+    "pandas": "2.2.3",
+    "joblib": "1.6.0"
+  }
+}
