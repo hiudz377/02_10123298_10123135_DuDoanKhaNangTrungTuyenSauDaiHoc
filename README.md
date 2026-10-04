@@ -36,9 +36,7 @@ Train model SVR & KNN.
   unzip ai-models/data/dataset.zip -d ai-models/data/
 
 ```
-
----
-
+```
 ## 4. Kết quả model (Bảng so sánh metric, model được chọn và lý do)
 
 * **Bảng so sánh các mô hình:**
