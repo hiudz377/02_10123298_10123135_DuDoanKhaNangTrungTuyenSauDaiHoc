@@ -1,9 +1,13 @@
 # Graduate Admission Prediction System
 
 ## 1. Thành viên (Họ tên, MSSV, phần việc)
-* **Thành viên 1:** [Họ tên] – [MSSV] – Phụ trách: Xây dựng AI Service, huấn luyện và tối ưu mô hình học máy (Linear Regression, SVR), viết Unit Test (`pytest`).
-* **Thành viên 2:** [Họ tên] – [MSSV] – Phụ trách: Phát triển Backend (FastAPI), tích hợp AI Service, xử lý middleware và logging.
-* **Thành viên 3:** [Họ tên] – [MSSV] – Phụ trách: Phát triển Frontend (React), thiết kế giao diện, quản lý state và cấu hình Docker/Docker Compose toàn hệ thống.
+* **Thành viên 1:** Nguyễn Tiến Thành – 10123298 – Phụ trách: Xây dựng Backend
+Làm báo cáo word,làm slide báo cáo
+Phân tích EDA,tiền xử lý dữ liệu
+Train model Linear Regression, GradientBoosting & Random Forest 
+* **Thành viên 2:** Phạm Văn Hiệu – 10123135 – Phụ trách: Xây dựng Khung dự án
+Làm ai-service, frontend
+Train model SVR & KNN.
 
 ---
 
@@ -32,6 +36,7 @@
   unzip ai-models/data/dataset.zip -d ai-models/data/
 
 ```
+
 ---
 
 ## 4. Kết quả model (Bảng so sánh metric, model được chọn và lý do)
@@ -56,6 +61,7 @@
 * `ai-models/models/graduate_admission_model_metadata.json`
 * `ai-models/models/svr_regressor_personal.joblib`
 
+
 * **Cách export từ Google Colab:**
 Sau khi huấn luyện mô hình bằng Scikit-learn trong Colab, sử dụng thư viện `joblib` để lưu artifact và metadata:
 ```python
@@ -77,6 +83,9 @@ with open("graduate_admission_model_metadata.json", "w") as f:
     json.dump(metadata, f)
 
 ```
+
+
+
 ---
 
 ## 6. Kiến trúc hệ thống (Sơ đồ FE - BE - AI)
@@ -94,6 +103,7 @@ with open("graduate_admission_model_metadata.json", "w") as f:
 [ ML Model Artifact (.joblib) ]
 
 ```
+
 ---
 
 ## 7. Chạy trên máy (Yêu cầu & Lệnh thực thi)
@@ -106,11 +116,17 @@ cp .env.example .env
 
 ```
 
+
 2. Khởi động toàn bộ hệ thống bằng Docker Compose:
 ```bash
 docker compose up --build
 
 ```
+
+
+
+
+
 ---
 
 ## 8. Huấn luyện lại model (Link Colab, thứ tự chạy notebook)
@@ -147,9 +163,16 @@ docker compose up --build
 ```bash
 ngrok http 8000
 
+```
+
+
 2. Sao chép URL công cộng nhận được (ví dụ: `https://xxxx.ngrok-free.app`).
 3. Cập nhật lại biến `API_URL` hoặc `CORS_ORIGINS` trong tệp `.env`.
 4. Khởi động lại hệ thống bằng lệnh `docker compose up -d --build`.
+
+
+
+---
 
 ## 11. Demo online (Địa chỉ App, địa chỉ AI Service/docs)
 
@@ -159,12 +182,16 @@ ngrok http 8000
 * **Địa chỉ Backend API Docs (Swagger):** `https://snazzy-diffuser-skiing.ngrok-free.dev/docs`
 * **Địa chỉ AI Service Docs:** `http://localhost:8001/docs` (Nội bộ Docker Network)
 
+---
+
 ## 12. Nhật ký đổi cổng/tunnel (Thời điểm đổi, địa chỉ cũ → mới)
 
 | Thời điểm (Date) | Dịch vụ (Service) | Địa chỉ cũ | Địa chỉ mới | Ghi chú |
 | --- | --- | --- | --- | --- |
 | *03/10/2026* | Backend API | `http://localhost:8000` | `https://snazzy-diffuser-skiing.ngrok-free.dev` | Khởi tạo ngrok tunnel công khai. |
 | *03/10/2026* | Frontend App | `http://localhost:3000` | `https://two-pets-love.loca.lt` | Chuyển sang localtunnel để test giao diện. |
+
+---
 
 ## 13. Kết quả kiểm thử hiệu năng
 
@@ -173,13 +200,23 @@ ngrok http 8000
 * Mô hình được nạp sẵn vào bộ nhớ RAM (`app.state.model`) thông qua vòng đời `lifespan` của FastAPI, giúp thời gian phản hồi (latency) cho mỗi yêu cầu dự đoán đạt mức tối ưu dưới **15ms**.
 * Hệ thống giám sát tự động (`healthcheck`) hoạt động ổn định với chu kỳ kiểm tra 10 giây/lần.
 
+
+
+---
+
 ## 14. Hạn chế và hướng phát triển
 
 * **Hạn chế:**
 * Mô hình hiện tại là mô hình tĩnh, chưa hỗ trợ cơ chế tự động học hỏi và cập nhật liên tục (Online Learning / Retraining) từ dữ liệu mới của người dùng.
 * Các đặc trưng đầu vào còn giới hạn ở các chỉ số học thuật truyền thống, chưa tích hợp thêm các yếu tố định tính như kỹ năng mềm hoặc hoạt động ngoại khóa.
 
+
 * **Hướng phát triển:**
 * Tích hợp công cụ giải thích mô hình (Explainable AI như **SHAP** hoặc **LIME**) để hiển thị trực quan các yếu tố tác động lớn nhất đến kết quả dự đoán của ứng viên.
 * Nâng cấp kiến trúc lên nền tảng đám mây chính thức (Cloud Deployment như AWS ECS, Google Cloud Run) thay vì chạy trên Docker Compose cục bộ nhằm đảm bảo tính sẵn sàng cao (High Availability).
 
+
+
+```
+
+```
