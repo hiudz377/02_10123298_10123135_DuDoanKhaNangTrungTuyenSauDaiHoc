@@ -1,4 +1,0 @@
-model,mae,mse,rmse,r2,best_cv_mae,best_parameters,fit_seconds_including_search,test_prediction_seconds,artifact
-LinearRegression,0.04795673362091202,0.004617003377285012,0.06794853476922819,0.8212082591486991,,{},0.05762791633605957,0.004583835601806641,models/linearregression_personal.joblib
-RandomForest,0.04672641636886277,0.004670832408918102,0.06834348841636709,0.819123749892897,0.04829362893336659,"{'model__max_depth': 5, 'model__min_samples_leaf': 4, 'model__min_samples_split': 10, 'model__n_estimators': 200}",78.84161639213562,0.01872539520263672,models/randomforest_personal.joblib
-GradientBoosting,0.048545377396639146,0.005036198561074122,0.07096617899446273,0.8049750813618097,0.04718979403828618,"{'model__learning_rate': 0.05, 'model__max_depth': 2, 'model__min_samples_split': 2, 'model__n_estimators': 150}",39.113170862197876,0.002268075942993164,models/gradientboosting_personal.joblib

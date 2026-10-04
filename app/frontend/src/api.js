@@ -47,3 +47,12 @@ export async function requestPrediction(features) {
         request_id: result.request_id || requestId,
     };
 }
+
+export async function fetchHistory(limit = 10) {
+    const response = await fetch(`/api/history?limit=${limit}`);
+    if (!response.ok) {
+        throw new Error('Không thể tải lịch sử dự đoán.');
+    }
+    const data = await response.json();
+    return data.history || [];
+}

@@ -1,13 +1,29 @@
 name: graduate-admission
 
 services:
+  # 1. Thêm dịch vụ MongoDB vào đây
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_service
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
   ai-service:
     build:
       context: ./ai-models
       dockerfile: service/Dockerfile
     environment:
       PORT: "8001"
-      MODEL_PATH: models/model.joblib
+      MODEL_PATH: models/graduate_admission_model.joblib
     ports:
       - "${AI_SERVICE_PORT:-8001}:8001"
     volumes:
@@ -31,11 +47,16 @@ services:
     environment:
       PORT: "8000"
       AI_SERVICE_URL: http://ai-service:8001
-      CORS_ORIGINS: "${CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}"
+      # Bổ sung cấu hình kết nối MongoDB trỏ trực tiếp tới service "mongodb" ở trên
+      MONGO_URI: "mongodb://mongodb:27017"
+      MONGO_DB_NAME: "graduate_admission_db"
+      CORS_ORIGINS: "${CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000,https://fuzzy-places-invent.loca.lt}"
     ports:
       - "${BACKEND_PORT:-8000}:8000"
     depends_on:
       ai-service:
+        condition: service_healthy
+      mongodb:                 # <-- Đợi MongoDB healthy xong mới chạy backend
         condition: service_healthy
     healthcheck:
       test:
@@ -73,3 +94,6 @@ services:
       retries: 5
       start_period: 5s
     restart: unless-stopped
+
+volumes:
+  mongo_data:   # <-- Khai báo volume để lưu trữ dữ liệu MongoDB bền vững không bị mất khi restart container

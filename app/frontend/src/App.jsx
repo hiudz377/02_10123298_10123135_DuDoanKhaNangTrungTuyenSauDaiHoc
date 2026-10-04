@@ -1,14 +1,15 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     AlertCircle,
     ArrowRight,
     CheckCircle2,
     GraduationCap,
+    History,
     LoaderCircle,
     RotateCcw,
     Sparkles,
 } from 'lucide-react';
-import { requestPrediction } from './api.js';
+import { fetchHistory, requestPrediction } from './api.js';
 import { FEATURE_DEFINITIONS, validateFeatures } from './validation.js';
 
 const emptyFeatures = Object.fromEntries(FEATURE_DEFINITIONS.map(({ key }) => [key, '']));
@@ -46,6 +47,60 @@ function NumberField({ definition, value, error, onChange, inputRef }) {
             />
             {error && <span className="field__error" id={`${definition.key}-error`}>{error}</span>}
         </label>
+    );
+}
+
+function HistoryPanel({ history, onRefresh }) {
+    return (
+        <section className="history-section" style={{ marginTop: '2rem', padding: '1.5rem', background: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1.1rem', color: '#1e293b' }}>
+                    <History size={20} /> Lịch sử dự đoán gần đây 
+                </h3>
+                <button 
+                    type="button" 
+                    onClick={onRefresh}
+                    style={{ background: 'none', border: '1px solid #cbd5e1', padding: '4px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem' }}
+                >
+                    Làm mới
+                </button>
+            </div>
+            {history.length === 0 ? (
+                <p style={{ color: '#64748b', fontSize: '0.9rem' }}>Chưa có lịch sử dự đoán nào được ghi nhận.</p>
+            ) : (
+                <div style={{ overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem', textAlign: 'left' }}>
+                        <thead>
+                            <tr style={{ borderBottom: '2px solid #cbd5e1', color: '#475569' }}>
+                                <th style={{ padding: '8px' }}>Thời gian</th>
+                                <th style={{ padding: '8px' }}>CGPA</th>
+                                <th style={{ padding: '8px' }}>GRE</th>
+                                <th style={{ padding: '8px' }}>TOEFL</th>
+                                <th style={{ padding: '8px' }}>Kết quả </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {history.map((item, idx) => {
+                                const f = item.features || {};
+                                const res = item.prediction_result || {};
+                                const timeStr = item.created_at ? new Date(item.created_at).toLocaleString('vi-VN') : 'N/A';
+                                return (
+                                    <tr key={idx} style={{ borderBottom: '1px solid #e2e8f0' }}>
+                                        <td style={{ padding: '8px', color: '#64748b', fontSize: '0.8rem' }}>{timeStr}</td>
+                                        <td style={{ padding: '8px' }}>{f['CGPA'] || 'N/A'}</td>
+                                        <td style={{ padding: '8px' }}>{f['GRE Score'] || 'N/A'}</td>
+                                        <td style={{ padding: '8px' }}>{f['TOEFL Score'] || 'N/A'}</td>
+                                        <td style={{ padding: '8px', fontWeight: 'bold', color: '#0f172a' }}>
+                                            {typeof res.chance_of_admit === 'number' ? percentFormat.format(res.chance_of_admit) : 'N/A'}
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+        </section>
     );
 }
 
@@ -112,8 +167,7 @@ function ResultPanel({ status, result, error, onReset }) {
             ) : (
                 <div className="result-content result-content--waiting">
                     <div className="result-content__placeholder"><GraduationCap size={27} /></div>
-                    <h2>Kết quả sẽ hiển thị tại đây</h2>
-                    <p>Điền thông tin học tập và nghiên cứu để xem ước tính.</p>
+                    
                 </div>
             )}
             <div className="result-panel__foot"><span>REGRESSION ESTIMATE</span><span>01 / 01</span></div>
@@ -127,7 +181,21 @@ export default function App() {
     const [status, setStatus] = useState('idle');
     const [result, setResult] = useState(null);
     const [submitError, setSubmitError] = useState('');
+    const [history, setHistory] = useState([]);
     const firstInputRef = useRef(null);
+
+    const loadHistory = async () => {
+        try {
+            const data = await fetchHistory(5);
+            setHistory(data);
+        } catch (err) {
+            console.error('Không tải được lịch sử:', err);
+        }
+    };
+
+    useEffect(() => {
+        loadHistory();
+    }, []);
 
     function updateFeature(key, value) {
         setFeatures((current) => ({ ...current, [key]: value }));
@@ -153,6 +221,7 @@ export default function App() {
             const prediction = await requestPrediction(validation.values);
             setResult(prediction);
             setStatus('success');
+            loadHistory(); // Tải lại lịch sử sau khi dự đoán thành công
         } catch (requestError) {
             setSubmitError(requestError.message || 'Đã xảy ra lỗi. Vui lòng thử lại.');
             setStatus('error');
@@ -182,7 +251,7 @@ export default function App() {
                 <section className="intro">
                     <p className="eyebrow">HỒ SƠ SAU ĐẠI HỌC <span>·</span> ƯỚC TÍNH CÁ NHÂN</p>
                     <h1>Dự đoán khả năng<br className="desktop-break" /> trúng tuyển sau đại học</h1>
-                    <p className="intro__copy">Nhập điểm số và thông tin nghiên cứu để nhận kết quả ước tính từ mô hình học máy.</p>
+            
                 </section>
 
                 <div className="workspace">
@@ -190,7 +259,7 @@ export default function App() {
                         <div className="form-section__heading">
                             <div>
                                 <p className="section-kicker">THÔNG TIN ỨNG VIÊN</p>
-                                <h2 id="form-title">Thông tin hồ sơ</h2>
+                                
                             </div>
                             <span className="required-note"><i /> Bắt buộc</span>
                         </div>
@@ -249,6 +318,9 @@ export default function App() {
 
                     <ResultPanel status={status} result={result} error={submitError} onReset={resetForm} />
                 </div>
+
+                {/* Phần hiển thị lịch sử dự đoán từ MongoDB */}
+                <HistoryPanel history={history} onRefresh={loadHistory} />
 
                 <footer className="page-footer">
                     <span>ADMITLAB <span className="footer-separator">/</span> HỌC MÁY ỨNG DỤNG</span>
