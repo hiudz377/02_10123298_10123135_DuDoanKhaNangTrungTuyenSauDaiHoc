@@ -148,11 +148,11 @@ docker compose up --build
 
 | Tên biến (Variable) | Ý nghĩa mô tả | Giá trị mẫu / Mặc định |
 | --- | --- | --- |
-| `AI_SERVICE_URL` | Địa chỉ URL nội bộ kết nối từ Backend sang AI Service. | `http://ai-service:8001` |
-| `API_URL` | Địa chỉ API public thông qua ngrok tunnel. | `https://snazzy-diffuser-skiing.ngrok-free.dev` |
-| `CORS_ORIGINS` | Danh sách các nguồn gốc được phép gọi CORS. | `http://localhost:3000,https://two-pets-love.loca.lt` |
-| `PORT` | Cổng lắng nghe của dịch vụ AI / Backend. | `8001` (AI) / `8000` (Backend) |
-| `MODEL_PATH` | Đường dẫn tới tệp artifact mô hình bên trong container. | `models/model.joblib` |
+| `AI_SERVICE_URL` | Địa chỉ URL nội bộ kết nối từ Backend sang AI Service. 
+| `API_URL` | Địa chỉ API public thông qua ngrok tunnel. 
+| `CORS_ORIGINS` | Danh sách các nguồn gốc được phép gọi CORS. |[https://two-pets-love.loca.lt](https://real-knives-find.loca.lt)` |
+| `PORT` | Cổng lắng nghe của dịch vụ AI / Backend. |
+| `MODEL_PATH` | Đường dẫn tới tệp artifact mô hình bên trong container. | 
 
 ---
 
